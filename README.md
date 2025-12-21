@@ -35,6 +35,56 @@ ng build
 ```
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Building and Deploying (GitHub Pages)
+
+This project is deployed using GitHub Pages via the Angular CLI.
+
+## Building the project
+
+To create a production build with the correct base URL for GitHub Pages, run:
+```
+ng build --configuration production --base-href /GreenPartySocietyWebApp/
+```
+This will generate the production build in:
+```
+dist/Frontend/
+```
+
+The dist/ directory is generated automatically and is not committed to the repository.
+
+## Deploying to GitHub Pages
+
+Deployment is handled using angular-cli-ghpages.
+
+To deploy the site:
+```
+ng deploy
+```
+
+This command will:
+
+Build the application in production mode
+
+Output the build files to dist/Frontend
+
+Push the build output to the gh-pages branch
+
+Publish the site via GitHub Pages
+
+Redeploying after changes
+
+After making changes to the codebase:
+```
+git add .
+git commit -m "Describe your changes"
+git push
+ng deploy
+```
+## Live site
+
+Once deployed, the site is available at:
+
+https://alexthomhab.github.io/GreenPartySocietyWebApp/
 
 ## Running unit tests
 
