@@ -26,7 +26,7 @@ For a complete list of available schematics (such as `components`, `directives`,
 ng generate --help
 ```
 
-## Building
+## Building Project
 
 To build the project run:
 
@@ -39,7 +39,7 @@ Building and Deploying (GitHub Pages)
 
 This project is deployed using GitHub Pages via the Angular CLI.
 
-## Building the project
+## Building and Deploying to GitHub pages
 
 To create a production build with the correct base URL for GitHub Pages, run:
 ```
@@ -49,10 +49,7 @@ This will generate the production build in:
 ```
 dist/Frontend/
 ```
-
 The dist/ directory is generated automatically and is not committed to the repository.
-
-## Deploying to GitHub Pages
 
 Deployment is handled using angular-cli-ghpages.
 
