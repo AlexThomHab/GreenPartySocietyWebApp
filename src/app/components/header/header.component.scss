@@ -1,0 +1,36 @@
+.site-header {
+  background-color: #2e7d32;
+  color: white;
+}
+
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.site-title {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.site-title span {
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.site-nav a {
+  color: white;
+  text-decoration: none;
+  margin-left: 20px;
+  font-weight: bold;
+}
+
+.site-nav a:hover {
+  text-decoration: underline;
+}
