@@ -23,6 +23,11 @@
   grid-template-columns: 2fr 1fr;
   gap: 40px;
 }
+.btn:hover {
+  background-color: #1b5e20;
+  color: white;
+  text-decoration: none;
+}
 
 
 .blog-posts h2 {

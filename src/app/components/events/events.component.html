@@ -9,48 +9,32 @@
     <div class="events-list">
       <h2>Upcoming Events (FAKE AND HARDCODED)</h2>
 
-      <div class="event-card">
+      <div
+        class="event-card"
+        *ngFor="let event of events"
+      >
         <div class="event-date">
-          <span class="day">12</span>
-          <span class="month">FEB</span>
+          <span class="day">{{ event.day }}</span>
+          <span class="month">{{ event.month }}</span>
         </div>
-        <div class="event-info">
-          <h3>Introductory Meeting</h3>
-          <p class="event-meta">📍 Students' Union · 6:00 PM</p>
-          <p>
-            Meet the committee, learn what we’re about, and get involved in
-            discussions around climate justice and green politics.
-          </p>
-        </div>
-      </div>
 
-      <div class="event-card">
-        <div class="event-date">
-          <span class="day">20</span>
-          <span class="month">FEB</span>
-        </div>
         <div class="event-info">
-          <h3>Climate & Cost of Living Discussion</h3>
-          <p class="event-meta">📍 Attenborough Building · 5:30 PM</p>
-          <p>
-            An open discussion on how climate policy intersects with the cost
-            of living crisis, and what alternatives could look like.
-          </p>
-        </div>
-      </div>
+          <h3>{{ event.title }}</h3>
 
-      <div class="event-card">
-        <div class="event-date">
-          <span class="day">05</span>
-          <span class="month">MAR</span>
-        </div>
-        <div class="event-info">
-          <h3>Green Campaigning Workshop</h3>
-          <p class="event-meta">📍 Online · 7:00 PM</p>
-          <p>
-            A practical session on campaigning, messaging, and grassroots
-            organising within the Green movement.
+          <p class="event-meta">
+            📍 {{ event.location }} · {{ event.time }}
           </p>
+
+          <p>
+            {{ event.preview }}
+          </p>
+
+          <a
+            class="btn"
+            [routerLink]="['/events', event.id]"
+          >
+            View details
+          </a>
         </div>
       </div>
 
