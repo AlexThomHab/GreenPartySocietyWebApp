@@ -7,32 +7,30 @@
   <div class="container events-layout">
 
     <div class="events-list">
-      <h2>Upcoming Events (FAKE AND HARDCODED)</h2>
+      <h2>Upcoming Events</h2>
 
-      <div
-        class="event-card"
-        *ngFor="let event of events"
-      >
+      <div *ngIf="isLoading" style="padding: 2rem; text-align: center;">
+        Loading events...
+      </div>
+
+      <div class="event-card" *ngFor="let event of upcomingEventsForList">
         <div class="event-date">
-          <span class="day">{{ event.day }}</span>
-          <span class="month">{{ event.month }}</span>
+          <span class="day">{{ event.startsAt | date:'dd' }}</span>
+          <span class="month">{{ event.startsAt | date:'MMM' | uppercase }}</span>
         </div>
 
         <div class="event-info">
           <h3>{{ event.title }}</h3>
 
           <p class="event-meta">
-            📍 {{ event.location }} · {{ event.time }}
+            📍 {{ event.location }} · {{ event.startsAt | date:'h:mm a' }}
           </p>
 
           <p>
-            {{ event.preview }}
+            {{ event.description }}
           </p>
 
-          <a
-            class="btn"
-            [routerLink]="['/events', event.id]"
-          >
+          <a class="btn" [routerLink]="['/events', event.id]">
             View details
           </a>
         </div>
@@ -43,9 +41,15 @@
     <div class="events-calendar">
       <h2>Event Calendar</h2>
 
-      <div class="calendar">
+      <div *ngIf="isLoading" style="padding: 2rem; text-align: center;">
+        Loading calendar...
+      </div>
+
+      <div class="calendar" *ngIf="!isLoading">
         <div class="calendar-header">
-          <span>February 2025</span>
+          <button class="cal-nav" (click)="prevMonth()">‹</button>
+          <span>{{ monthLabel() }}</span>
+          <button class="cal-nav" (click)="nextMonth()">›</button>
         </div>
 
         <div class="calendar-grid">
@@ -57,43 +61,18 @@
           <div class="day-label">Sat</div>
           <div class="day-label">Sun</div>
 
-          <div class="day empty"></div>
-          <div class="day empty"></div>
+          <ng-container *ngFor="let c of cells">
+            <div *ngIf="c.kind === 'empty'" class="day empty"></div>
 
-          <div class="day">1</div>
-          <div class="day">2</div>
-          <div class="day">3</div>
-          <div class="day">4</div>
-          <div class="day">5</div>
-          <div class="day">6</div>
-          <div class="day">7</div>
-          <div class="day">8</div>
-          <div class="day">9</div>
-          <div class="day">10</div>
-          <div class="day">11</div>
-
-          <div class="day has-event">12</div>
-          <div class="day">13</div>
-          <div class="day">14</div>
-          <div class="day">15</div>
-          <div class="day">16</div>
-          <div class="day">17</div>
-          <div class="day">18</div>
-          <div class="day">19</div>
-          <div class="day has-event">20</div>
-          <div class="day">21</div>
-          <div class="day">22</div>
-          <div class="day">23</div>
-          <div class="day">24</div>
-          <div class="day">25</div>
-          <div class="day">26</div>
-          <div class="day">27</div>
-          <div class="day">28</div>
+            <div
+              *ngIf="c.kind === 'day'"
+              class="day"
+              [ngClass]="{ 'has-event': c.hasEvent }"
+            >
+              {{ c.day }}
+            </div>
+          </ng-container>
         </div>
-
-        <p class="calendar-note">
-          (Calendar will become interactive later)
-        </p>
       </div>
     </div>
 
