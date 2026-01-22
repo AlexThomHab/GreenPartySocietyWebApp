@@ -43,6 +43,47 @@ export class Events implements OnInit {
     this.loadMonth(d.getFullYear(), d.getMonth());
   }
 
+  getOutlookCalendarUrl(event: EventDto): string {
+    const start = new Date(event.startsAt);
+    const end = event.endsAt ? new Date(event.endsAt) : new Date(start.getTime() + 60 * 60 * 1000);
+
+    const formatDate = (date: Date): string => {
+      const pad = (n: number) => n.toString().padStart(2, '0');
+      return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+    };
+
+    const params = new URLSearchParams({
+      path: '/calendar/action/compose',
+      rru: 'addevent',
+      subject: event.title,
+      body: event.description,
+      location: event.location,
+      startdt: formatDate(start),
+      enddt: formatDate(end)
+    });
+
+    return `https://outlook.office.com/calendar/0/deeplink/compose?${params.toString()}`;
+  }
+
+  getGoogleCalendarUrl(event: EventDto): string {
+    const start = new Date(event.startsAt);
+    const end = event.endsAt ? new Date(event.endsAt) : new Date(start.getTime() + 60 * 60 * 1000);
+
+    const formatDate = (date: Date): string => {
+      return date.toISOString().replace(/-|:|\.\d+/g, '');
+    };
+
+    const params = new URLSearchParams({
+      action: 'TEMPLATE',
+      text: event.title,
+      details: event.description,
+      location: event.location,
+      dates: `${formatDate(start)}/${formatDate(end)}`
+    });
+
+    return `https://calendar.google.com/calendar/render?${params.toString()}`;
+  }
+
   private loadMonth(year: number, month: number): void {
     this.viewYear = year;
     this.viewMonth = month;
@@ -51,21 +92,15 @@ export class Events implements OnInit {
     const from = new Date(Date.UTC(year, month, 1, 0, 0, 0));
     const to = new Date(Date.UTC(year, month + 1, 1, 0, 0, 0));
 
-    console.log('Loading events from', from.toISOString(), 'to', to.toISOString());
-
     this.eventsApi.getEventsInRange(from.toISOString(), to.toISOString()).subscribe({
       next: (events: EventDto[]) => {
-        console.log('Received events:', events);
         this.monthEvents = events;
 
         const daysWithEvents = new Set<number>();
         for (const ev of events) {
           const start = new Date(ev.startsAt);
-          console.log('Event starts at:', ev.startsAt, 'Day:', start.getDate());
           daysWithEvents.add(start.getDate());
         }
-
-        console.log('Days with events:', Array.from(daysWithEvents));
 
         this.buildCalendarGrid(year, month, daysWithEvents);
 
@@ -73,7 +108,6 @@ export class Events implements OnInit {
           (a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime()
         );
 
-        console.log('Setting isLoading to false');
         this.isLoading = false;
         this.cdr.detectChanges();
       },
@@ -106,7 +140,6 @@ export class Events implements OnInit {
     while (cells.length % 7 !== 0) cells.push({ kind: 'empty' });
 
     this.cells = cells;
-    console.log('Built calendar grid with', cells.length, 'cells');
   }
 
   monthLabel(): string {

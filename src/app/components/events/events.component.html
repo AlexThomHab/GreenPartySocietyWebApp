@@ -30,9 +30,18 @@
             {{ event.description }}
           </p>
 
-          <a class="btn" [routerLink]="['/events', event.id]">
-            View details
-          </a>
+          <div class="event-actions">
+            <a class="btn" [routerLink]="['/events', event.id]">
+              View details
+            </a>
+            <a class="btn btn-secondary" [href]="getOutlookCalendarUrl(event)" target="_blank" rel="noopener noreferrer">
+              Add to Outlook
+            </a>
+            <a class="btn btn-secondary" [href]="getGoogleCalendarUrl(event)" target="_blank" rel="noopener noreferrer">
+              Add to Google
+            </a>
+
+          </div>
         </div>
       </div>
 
