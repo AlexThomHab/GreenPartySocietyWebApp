@@ -31,7 +31,7 @@
           </p>
 
           <div class="event-actions">
-            <a class="btn" [routerLink]="['/events', event.id]">
+            <a class="btn"> <!-- replaced <a class="btn" [routerLink]="['/events', event.id]"> -->
               View details
             </a>
             <a class="btn btn-secondary" [href]="getOutlookCalendarUrl(event)" target="_blank" rel="noopener noreferrer">

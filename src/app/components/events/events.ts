@@ -2,6 +2,8 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { EventsApiService, EventDto } from '../../services/events-api.service';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 type CalendarCell =
   | { kind: 'empty' }
@@ -22,6 +24,26 @@ export class Events implements OnInit {
   cells: CalendarCell[] = [];
   upcomingEventsForList: EventDto[] = [];
   isLoading = true;
+
+  // Hardcoded events for static deployment
+  private readonly HARDCODED_EVENTS: EventDto[] = [
+    {
+      id: 'litter-picking-jan-2026',
+      title: 'Litter Picking at Bede Park',
+      description: 'Join us for a community litter picking event at Bede Park. Help keep our local green spaces clean and beautiful. All equipment will be provided. Everyone welcome!',
+      startsAt: '2026-01-24T13:00:00',
+      endsAt: '2026-01-24T16:00:00',
+      location: 'Bede Park, Leicester'
+    },
+    {
+      id: 'fundraising-meal-jan-2026',
+      title: 'Leicester Green Party Fundraising Meal',
+      description: 'Join fellow Green Party members and supporters for an evening of great food and conversation at Chef And Spice Buffet. All proceeds support our local campaigns and initiatives.',
+      startsAt: '2026-01-26T18:30:00',
+      endsAt: '2026-01-26T21:00:00',
+      location: 'Chef And Spice Buffet, Leicester'
+    }
+  ];
 
   constructor(
     private eventsApi: EventsApiService,
@@ -92,7 +114,12 @@ export class Events implements OnInit {
     const from = new Date(Date.UTC(year, month, 1, 0, 0, 0));
     const to = new Date(Date.UTC(year, month + 1, 1, 0, 0, 0));
 
-    this.eventsApi.getEventsInRange(from.toISOString(), to.toISOString()).subscribe({
+    const eventsInRange = this.HARDCODED_EVENTS.filter(event => {
+      const eventDate = new Date(event.startsAt);
+      return eventDate >= from && eventDate < to;
+    });
+
+    of(eventsInRange).pipe(delay(300)).subscribe({
       next: (events: EventDto[]) => {
         this.monthEvents = events;
 
